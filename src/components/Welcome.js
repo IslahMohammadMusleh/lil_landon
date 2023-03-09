@@ -1,6 +1,20 @@
 
-import galaryLinks from './data/galary_links.json'
+// import galaryLinks from './data/galary_links.json'
+import {React, useState, useEffect} from 'react'
 const Welcome = () => {
+    const [galaryLinks, setGalaryLinks] = useState([]);
+
+    const loadGalaryLinks = async () => {
+        const resp = await fetch('https://fq7nfs7qol.execute-api.us-east-2.amazonaws.com/Production/gallary-images')
+        const respData = await resp.json();
+        console.log(respData)
+        setGalaryLinks(respData)
+    }
+
+    useEffect(() => {
+        loadGalaryLinks();
+    }, [])
+
     return (
         <div className="scene" id="welcome">
         <article className="content">
@@ -8,7 +22,7 @@ const Welcome = () => {
                 {
                     galaryLinks.map((image, index) => {
                         return (
-                            <img key={index} className={image.class} src={image.link} alt={image.alt} />
+                            <img key={index} className={image.className} src={image.src} alt={image.alt} />
                         )
                     })
                 }

@@ -1,8 +1,37 @@
 
-import hotelArrivalInfo from './data/hotel_arrival_info.json'
-import hotelServices from './data/hotel_services.json'
-import hotelAccessibility from './data/hotel_accessibility.json'
+// import hotelArrivalInfo from './data/hotel_arrival_info.json'
+// import hotelServices from './data/hotel_services.json'
+// import hotelAccessibility from './data/hotel_accessibility.json'
+import { React, useState, useEffect } from 'react'
 const HotelInfo = () => {
+    const [hotelArrivalInfo, setHotelArrivalInfo] = useState([]);
+    const [hotelServices, setHotelServices] = useState([]);
+    const [hotelAccessibility, setHotelAccessibility] = useState([]);
+
+    const loadHotelArrivalInfo = async () => {
+        const resp = await fetch('https://fq7nfs7qol.execute-api.us-east-2.amazonaws.com/Production/arrival-info')
+        const respData = await resp.json();
+        setHotelArrivalInfo(respData)
+    }
+
+    const loadHotelServices = async () => {
+        const resp = await fetch('https://fq7nfs7qol.execute-api.us-east-2.amazonaws.com/Production/services')
+        const respData = await resp.json();
+        setHotelServices(respData)
+    }
+
+    const loadHotelAccessibility = async () => {
+        const resp = await fetch('https://fq7nfs7qol.execute-api.us-east-2.amazonaws.com/Production/accessabilities')
+        const respData = await resp.json();
+        setHotelAccessibility(respData)
+    }
+
+    useEffect(() => {
+        loadHotelArrivalInfo();
+        loadHotelServices();
+        loadHotelAccessibility();
+    }, [])
+
     return (
         <div className="scene" id="hotelinfo">
             <article className="heading">
@@ -15,8 +44,7 @@ const HotelInfo = () => {
                         {
                             hotelArrivalInfo.map((info, index) => {
                                 return (
-                                    <li key={index}><strong>{info.text}</strong> {info.description}</li>
-
+                                    <li key={index}><strong>{info.name}</strong> {info.description}</li>
                                 )
                             })
                         }
@@ -29,7 +57,7 @@ const HotelInfo = () => {
                         {
                             hotelServices.map((service, index) => {
                                 return (
-                                    <li key={index}>{service.text}</li>
+                                    <li key={index}>{service.name}</li>
                                 )
                             })
                         }
@@ -42,7 +70,7 @@ const HotelInfo = () => {
                         {
                             hotelAccessibility.map((access, index) => {
                                 return (
-                                    <li key={index}>{access.text}</li>
+                                    <li key={index}>{access.name}</li>
                                 )
                             })
                         }
